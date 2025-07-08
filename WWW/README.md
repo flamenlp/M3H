@@ -1,69 +1,68 @@
-README
+# AxiOM & M3H: Figurative and Commonsense Mental Health Meme Classification
 
-Overview
+This repository contains the implementation of **M3H**, a framework proposed in the paper:
 
-This project proposes a model that consists of three primary files:
+**“Figurative-cum-Commonsense Knowledge Infusion for Multimodal Mental Health Meme Classification”**  
+📄 [Read the Paper](https://arxiv.org/abs/2501.15321)  
+📅 Presented at: *The Web Conference (WWW) 2025*
 
-1. get_embeddings.ipynb
+---
 
-This is the first file that needs to be executed.
+## Overview
 
-It loads both the train and test datasets.
+M3H is a multimodal framework designed to classify mental health symptoms expressed in memes. It infuses commonsense and figurative reasoning into the model pipeline using a combination of visual features, OCR-extracted text, and knowledge triples.
 
-Preprocessing is performed to extract useful features.
+---
 
-Embeddings are generated for OCR text and triples (Common Sense Reasoning) using a sentence transformer.
+## Repository Structure
 
-The embeddings are stored in four .pt files.
+The project consists of three core notebooks:
 
-2. get_top_k.ipynb
+### 1. `get_embeddings.ipynb`
 
-This script identifies the top K most relevant examples for a given meme.
+- Loads training and testing datasets.
+- Extracts features from meme text (OCR) and commonsense triples.
+- Generates embeddings using a SentenceTransformer.
+- Saves outputs into `.pt` files:
+  - `train_ocr.pt`, `test_ocr.pt`
+  - `train_triplet.pt`, `test_triplet.pt`
 
-It loads the .pt files generated in get_embeddings.ipynb.
+### 2. `get_top_k.ipynb`
 
-Calls filter.py, which uses cosine similarity to find examples similar to the current input.
+- Loads the `.pt` embedding files.
+- Uses cosine similarity (via `filter.py`) to find top-K similar examples for each input.
+- Saves the retrieved indices as a DataFrame in a `.csv` file.
 
-Outputs a final CSV file containing indices of memes similar to each input, stored in a DataFrame.
+### 3. `main.ipynb`
 
-3. main.ipynb
+- Loads the retrieved meme indices.
+- Formats the data into prompts combining:
+  - OCR text  
+  - Figurative reasoning  
+  - Retrieved similar examples
+- Feeds the prompts into a classification model for inference.
 
-Loads the final DataFrame generated in get_top_k.ipynb.
+---
 
-Formats the data into prompts.
+## Classification Tasks
 
-Passes the prompts to the backbone model for final processing.
+The framework supports two datasets and task settings:
 
-Classification Tasks
+### Anxiety (AxiOM Dataset)
+- **Type**: Multiclass, Single-label Classification  
+- **Loss Function**: `CrossEntropyLoss`
 
-The model is designed to handle two types of classification problems:
+### Depression (RESTORE Dataset)
+- **Type**: Multiclass, Multi-label Classification  
+- **Loss Function**: `BCEWithLogitsLoss`
 
-1. Anxiety Data
+---
 
-Multiclass Single Label Classification
+##  Execution Order
 
-The model predicts a single category for each input.
+Follow this order for proper pipeline execution:
 
-2. Depressive Data
-
-Multiclass Multi-Label Classification
-
-The model predicts multiple categories for each input.
-
-Implementation Considerations
-
-The only modification required in the training loop is how the loss is computed:
-
-For single-label classification, the model outputs a single class, and the loss function should be appropriate for this task (e.g., CrossEntropyLoss).
-
-For multi-label classification, the model outputs multiple labels, and the loss function should be suitable for this task (e.g., BCEWithLogitsLoss).
-
-Execution Order
-
-Run get_embeddings.ipynb to generate embeddings.
-
-Run get_top_k.ipynb to find similar memes.
-
-Run main.ipynb to process the final dataset and pass it to the model.
-
-Ensure that the appropriate classification method is applied based on the dataset being used.
+```bash
+1. Run get_embeddings.ipynb    # Generate OCR + triple embeddings
+2. Run get_top_k.ipynb         # Retrieve Top-K similar examples using cosine similarity
+3. Run main.ipynb              # Prompt construction + model inference/classification
