@@ -36,12 +36,29 @@ This repository contains the **AxiOM** and **RESTORE** datasets along with the i
 
 ---
 
-## If you use this work, please cite us:
+## If you use the Our dataset, please cite:
+
 
 ```bibtex
+Axiom Dataset Citation (Anxiety)
+
 @article{mazhar2025figurative,
   title={Figurative-cum-Commonsense Knowledge Infusion for Multimodal Mental Health Meme Classification},
   author={Mazhar, Abdullah and Srivastava, Aseem and Ruhnke, Polly and Vaddavalli, Lavanya and Katragadda, Sri Keshav and Yadav, Shweta and Akhtar, Md Shad and others},
   journal={arXiv preprint arXiv:2501.15321},
   year={2025}
 }
+
+
+Restore Dataset Citation (Depressive)
+
+@inproceedings{yadav2023towards,
+  title={Towards identifying fine-grained depression symptoms from memes},
+  author={Yadav, Shweta and Caragea, Cornelia and Zhao, Chenye and Kumari, Naincy and Solberg, Marvin and Sharma, Tanmay},
+  booktitle={Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages={8890--8905},
+  year={2023}
+}
+
+
+
